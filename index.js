@@ -26,7 +26,7 @@ app.use(morgan());
 app.use(cors());
 app.use(express.json());
 
-const tempsRouter = require('./src/routers/temp.controller');
+const tempsRouter = require('./src/routers/temp.router');
 app.use('/temperatures',tempsRouter);
 
 // WebSocket: manejar conexiones entrantes
