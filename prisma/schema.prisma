@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model temp {
+model temperature {
   id Int @id @default(autoincrement())
   degrees Float
   source String?

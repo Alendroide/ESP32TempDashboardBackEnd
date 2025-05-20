@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 const { startOfDay, endOfDay } = require('date-fns');
 
 // GET /temperatures?page=1&limit=20
-exports.getAll = async (req, res) => {
+const getAll = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 20;
   const skip = (page - 1) * limit;
@@ -18,7 +18,7 @@ exports.getAll = async (req, res) => {
 };
 
 // GET /temperatures/today
-exports.getToday = async (req, res) => {
+const getToday = async (req, res) => {
   const now = new Date();
   const start = startOfDay(now);
   const end = endOfDay(now);
@@ -36,7 +36,7 @@ exports.getToday = async (req, res) => {
 };
 
 // GET /temperatures/range?from=2025-05-01&to=2025-05-10
-exports.getByRange = async (req, res) => {
+const getByRange = async (req, res) => {
   const { from, to } = req.query;
 
   if (!from || !to) return res.status(400).json({ error: 'from and to required' });
@@ -54,7 +54,7 @@ exports.getByRange = async (req, res) => {
 };
 
 // GET /temperatures/average?from=2025-05-01&to=2025-05-10
-exports.getAverage = async (req, res) => {
+const getAverage = async (req, res) => {
   const { from, to } = req.query;
   if (!from || !to) return res.status(400).json({ error: 'from and to required' });
 
@@ -74,7 +74,7 @@ exports.getAverage = async (req, res) => {
 };
 
 // POST /temperatures
-exports.create = async (req, res) => {
+const create = async (req, res) => {
   const { degrees, source } = req.body;
   if (typeof degrees !== 'number') return res.status(400).json({ error: 'degrees must be a number' });
 
@@ -92,7 +92,7 @@ exports.create = async (req, res) => {
 };
 
 // GET /temperatures/stats?from=2025-05-01&to=2025-05-10
-exports.getStats = async (req, res) => {
+const getStats = async (req, res) => {
   const { from, to } = req.query;
   if (!from || !to) return res.status(400).json({ error: 'from and to required' });
 
@@ -118,7 +118,7 @@ exports.getStats = async (req, res) => {
 };
 
 // GET /temperatures/hourly-average?date=2025-05-18
-exports.getHourlyAverage = async (req, res) => {
+const getHourlyAverage = async (req, res) => {
   const { date } = req.query;
   if (!date) return res.status(400).json({ error: 'date required (YYYY-MM-DD)' });
 
@@ -151,4 +151,14 @@ exports.getHourlyAverage = async (req, res) => {
   });
 
   res.json(result);
+};
+
+module.exports = {
+  getAll,
+  getToday,
+  getByRange,
+  getAverage,
+  create,
+  getStats,
+  getHourlyAverage,
 };
