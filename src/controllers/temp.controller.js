@@ -85,9 +85,6 @@ const create = async (req, res) => {
     },
   });
 
-  const io = req.app.get('io');
-  io.emit('new-temperature', newTemp);
-
   res.status(201).json(newTemp);
 };
 
