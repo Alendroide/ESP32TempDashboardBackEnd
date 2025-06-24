@@ -74,18 +74,16 @@ const getAverage = async (req, res) => {
 };
 
 // POST /temperatures
-const create = async (req, res) => {
-  const { degrees, source } = req.body;
+const create = async (payload) => {
+  const { degrees, source } = payload;
   if (typeof degrees !== 'number') return res.status(400).json({ error: 'degrees must be a number' });
 
-  const newTemp = await prisma.temperature.create({
+  await prisma.temperature.create({
     data: {
       degrees,
       source,
     },
   });
-
-  res.status(201).json(newTemp);
 };
 
 // GET /temperatures/stats?from=2025-05-01&to=2025-05-10

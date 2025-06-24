@@ -8,6 +8,8 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 
+const tempController = require('./src/controllers/temp.controller');
+
 app.use(morgan());
 app.use(cors());
 app.use(express.json());
@@ -43,6 +45,8 @@ client.on('message', (receivedTopic, message) => {
     const payload = message.toString();
     console.log(`📥 Mensaje recibido en ${receivedTopic}: ${payload}`);
     
+    if (receivedTopic === tempTopic) tempController.create(JSON.parse(payload));
+    // if (receivedTopic === gasTopic) tempController.create(JSON.parse(payload));
 });
 
 client.on('error', (err) => {

@@ -15,9 +15,6 @@ router.get('/range', controller.getByRange);
 // Obtener el promedio de temperaturas entre dos fechas
 router.get('/average', controller.getAverage);
 
-// Crear un nuevo registro de temperatura
-router.post('/', controller.create);
-
 // Obtener estadísticas (avg, min, max, count) entre fechas
 router.get('/stats', controller.getStats);
 
