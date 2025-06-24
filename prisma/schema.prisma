@@ -19,3 +19,10 @@ model temperature {
   source String?
   createdAt DateTime @default(now())
 }
+
+model air {
+  id Int @id @default(autoincrement())
+  airQuality Float
+  source String?
+  createdAt DateTime @default(now())
+}
