@@ -9,13 +9,16 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const tempController = require('./src/controllers/temp.controller');
+const airController = require('./src/controllers/air.controller');
 
 app.use(morgan());
 app.use(cors());
 app.use(express.json());
 
 const tempsRouter = require('./src/routers/temp.router');
+const airRouter = require('./src/routers/air.router');
 app.use('/temperatures',tempsRouter);
+app.use('/air',airRouter);
 
 const brokerURL = "ws://broker.hivemq.com:8000/mqtt";
 const client = mqtt.connect(brokerURL);
@@ -42,11 +45,10 @@ client.on('connect', () => {
 });
 
 client.on('message', (receivedTopic, message) => {
-    const payload = message.toString();
-    console.log(`📥 Mensaje recibido en ${receivedTopic}: ${payload}`);
-    
-    if (receivedTopic === tempTopic) tempController.create(JSON.parse(payload));
-    // if (receivedTopic === gasTopic) tempController.create(JSON.parse(payload));
+    const rawPayload = message.toString();
+    const payload = JSON.parse(rawPayload);
+    if (receivedTopic === tempTopic) tempController.create(payload);
+    if (receivedTopic === gasTopic) airController.create(payload);
 });
 
 client.on('error', (err) => {
