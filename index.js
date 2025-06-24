@@ -17,7 +17,7 @@ app.use(express.json());
 
 const tempsRouter = require('./src/routers/temp.router');
 const airRouter = require('./src/routers/air.router');
-app.use('/temperatures',tempsRouter);
+app.use('/temperature',tempsRouter);
 app.use('/air',airRouter);
 
 const brokerURL = "ws://broker.hivemq.com:8000/mqtt";
