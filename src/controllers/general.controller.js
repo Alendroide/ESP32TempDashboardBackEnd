@@ -34,7 +34,7 @@ const getStats = async (req, res) => {
 
   // Seleccionar 20 puntos equidistantes
   const totalTemperatures = allTemperatures.length;
-  const stepTemperatures = Math.floor(total / 20);
+  const stepTemperatures = Math.floor(totalTemperatures / 20);
   const sampledTemperatures = [];
 
   for (let i = 0; i < 20 && i * stepTemperatures < totalTemperatures; i++) {
