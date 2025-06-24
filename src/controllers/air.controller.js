@@ -8,12 +8,30 @@ const getAll = async (req, res) => {
   const limit = parseInt(req.query.limit) || 20;
   const skip = (page - 1) * limit;
 
-  const data = await prisma.air.findMany({
-    skip,
-    take: limit,
-    orderBy: { createdAt: "desc" },
-  });
-  res.json(data);
+  try {
+    const [data, total] = await Promise.all([
+      prisma.air.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.air.count(),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    res.json({
+      data,
+      pagination: {
+        page,
+        totalPages,
+        totalRecords: total,
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching air data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 // GET /air/today

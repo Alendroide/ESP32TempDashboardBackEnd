@@ -9,12 +9,30 @@ const getAll = async (req, res) => {
   const limit = parseInt(req.query.limit) || 20;
   const skip = (page - 1) * limit;
 
-  const data = await prisma.temperature.findMany({
-    skip,
-    take: limit,
-    orderBy: { createdAt: 'desc' },
-  });
-  res.json(data);
+  try {
+    const [data, total] = await Promise.all([
+      prisma.temperature.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.temperature.count(),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    res.json({
+      data,
+      pagination: {
+        page,
+        totalPages,
+        totalRecords: total,
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching temperatures:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 // GET /temperatures/today
