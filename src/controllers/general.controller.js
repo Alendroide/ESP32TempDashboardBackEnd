@@ -38,7 +38,7 @@ const getStats = async (req, res) => {
   const sampledTemperatures = [];
 
   for (let i = 0; i < 20 && i * stepTemperatures < totalTemperatures; i++) {
-    sampledTemperatures.push(allTemperatures[i * step]);
+    sampledTemperatures.push(allTemperatures[i * stepTemperatures]);
   }
 
   const gasResult = await prisma.air.aggregate({
